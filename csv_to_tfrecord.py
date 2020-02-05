@@ -12,6 +12,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+from absl import flags
+
 import os
 import io
 import pandas as pd
@@ -23,8 +25,6 @@ from PIL import Image
 from utils import dataset_util
 from collections import namedtuple, OrderedDict
 
-'''
-flags = tf.app.flags
 flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
 flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
 flags.DEFINE_string('label', '', 'Name of class label')
@@ -34,12 +34,9 @@ flags.DEFINE_string('label', '', 'Name of class label')
 # and so on.
 flags.DEFINE_string('img_path', '', 'Path to images')
 FLAGS = flags.FLAGS
-'''
 
-# TO-DO replace this with label map
-# for multiple labels add more else if statements
 def class_text_to_int(row_label):
-    if row_label == 'waldo':  # 'ship':
+    if row_label == 'waldo':
         return 1
     # comment upper if statement and uncomment these statements for multiple labelling
     # if row_label == FLAGS.label0:
@@ -99,17 +96,23 @@ def create_tf_example(group, path):
 
 
 def main(_):
-    writer = tf.io.TFRecordWriter('test.tfrecord') #'train.tfrecord'
-    path = os.path.join(os.getcwd(), 'eval_images/')
-    examples = pd.read_csv('data/test_annotations.csv')
+    print('#############')
+    print(FLAGS.csv_input)
+    print(FLAGS.output_path)
+    print(FLAGS.img_path)
+    print('##########')
+    writer = tf.io.TFRecordWriter(FLAGS.output_path)
+    path = os.path.join(os.getcwd(), FLAGS.img_path)
+    examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
+    print(grouped)
     for group in grouped:
         tf_example = create_tf_example(group, path)
         writer.write(tf_example.SerializeToString())
 
     writer.close()
     output_path = os.path.join(os.getcwd())
-    print('Successfully created the TFRecords: {}'.format(output_path))
+    print('Successfully created the TFRecords: {}'.format(FLAGS.output_path))
 
 
 if __name__ == '__main__':
