@@ -20,7 +20,7 @@ import sys
 sys.path.append("../../models/research")
 
 from PIL import Image
-from object_detection.utils import dataset_util
+from utils import dataset_util
 from collections import namedtuple, OrderedDict
 
 '''
@@ -99,16 +99,16 @@ def create_tf_example(group, path):
 
 
 def main(_):
-    writer = tf.io.TFRecordWriter('train.tfrecord')
-    path = os.path.join(os.getcwd(), 'images/')
-    examples = pd.read_csv('data/annotations.csv')
+    writer = tf.io.TFRecordWriter('test.tfrecord') #'train.tfrecord'
+    path = os.path.join(os.getcwd(), 'eval_images/')
+    examples = pd.read_csv('data/test_annotations.csv')
     grouped = split(examples, 'filename')
     for group in grouped:
         tf_example = create_tf_example(group, path)
         writer.write(tf_example.SerializeToString())
 
     writer.close()
-    output_path = os.path.join(os.getcwd(), '../')
+    output_path = os.path.join(os.getcwd())
     print('Successfully created the TFRecords: {}'.format(output_path))
 
 
