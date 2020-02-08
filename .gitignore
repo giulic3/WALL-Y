@@ -131,3 +131,6 @@ dmypy.json
 # Tensorflow/Tensorboard
 *.tfrecord
 .tensorboard-info/
+model/
+trained_model/
+trained_inference_graphs/
