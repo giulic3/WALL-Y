@@ -4,3 +4,4 @@ filename,width,height,class,xmin,ymin,xmax,ymax
 3.jpg,2048,1346,waldo,1390,463,1422,500
 8.jpg,2800,1760,waldo,1166,291,1191,322
 8.jpg,2800,1760,waldo,618,130,707,227
+hole.jpg,2048,1318,waldo,1912,56,1938,97
