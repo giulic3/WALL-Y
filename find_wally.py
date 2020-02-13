@@ -5,6 +5,8 @@ import tensorflow as tf
 import matplotlib
 from PIL import Image
 import matplotlib.patches as patches
+sys.path.append("./models/research/")
+
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 import argparse

@@ -22,7 +22,7 @@ import sys
 sys.path.append("../../models/research")
 
 from PIL import Image
-from utils import dataset_util
+from utils import dataset_util # TODO Dovrebbe importare da object_detection.utils
 from collections import namedtuple, OrderedDict
 
 flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
