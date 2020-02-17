@@ -1,0 +1,26 @@
+<annotation>
+	<folder>new images</folder>
+	<filename>underground_hunters.jpg</filename>
+	<path>/Users/Anna/Desktop/AI_proj/new images/underground_hunters.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>3566</width>
+		<height>2257</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>waldo</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>3068</xmin>
+			<ymin>882</ymin>
+			<xmax>3090</xmax>
+			<ymax>933</ymax>
+		</bndbox>
+	</object>
+</annotation>

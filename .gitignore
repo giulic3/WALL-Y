@@ -134,3 +134,8 @@ dmypy.json
 model/
 trained_model/
 trained_inference_graphs/
+addons/
+cropped_images/
+train/
+*.whl
+.directory
