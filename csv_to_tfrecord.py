@@ -1,11 +1,8 @@
 """
 Usage:
 
-# Create train data:
-python generate_tfrecord.py --label=<LABEL> --csv_input=<PATH_TO_ANNOTATIONS_FOLDER>/train_labels.csv  --output_path=<PATH_TO_ANNOTATIONS_FOLDER>/train.record
-
-# Create test data:
-python generate_tfrecord.py --label=<LABEL> --csv_input=<PATH_TO_ANNOTATIONS_FOLDER>/test_labels.csv  --output_path=<PATH_TO_ANNOTATIONS_FOLDER>/test.record
+# Create train/test data:
+python csv_to_tfrecord.py --label=<LABEL> --csv_input=<PATH_TO_ANNOTATIONS_FOLDER>/test_labels.csv  --img_path=<PATH_TO_IMG_FOLDER> --output_path=<PATH_TO_ANNOTATIONS_FOLDER>/test.record
 """
 
 from __future__ import division

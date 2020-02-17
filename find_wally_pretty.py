@@ -7,17 +7,31 @@ from PIL import Image
 import matplotlib.patches as patches
 import argparse
 
+'''
+Look for Wally in a pic and draw it on screen with bounding boxes and a transparency
+mask for the brackground.
+'''
+
+
 def main(args):
     def draw_box(box, image_np):
-        #expand the box by 50%
+        # Expand the box by 50%
         box += np.array([-(box[2] - box[0])/2, -(box[3] - box[1])/2, (box[2] - box[0])/2, (box[3] - box[1])/2]) 
 
         fig = plt.figure()
         ax = plt.Axes(fig, [0., 0., 1., 1.])
         fig.add_axes(ax)
 
-        #draw blurred boxes around box
-        ax.add_patch(patches.Rectangle((0,0),box[1]*image_np.shape[1], image_np.shape[0],linewidth=0,edgecolor='none',facecolor='w',alpha=0.8))
+        # Draw blurred boxes around box
+        ax.add_patch(patches.Rectangle(
+            (0,0),
+            box[1]*image_np.shape[1], 
+            image_np.shape[0],
+            linewidth=0,
+            edgecolor='none',
+            facecolor='w',
+            alpha=0.8))
+
         ax.add_patch(patches.Rectangle((box[3]*image_np.shape[1],0),image_np.shape[1], image_np.shape[0],linewidth=0,edgecolor='none',facecolor='w',alpha=0.8))
         ax.add_patch(patches.Rectangle((box[1]*image_np.shape[1],0),(box[3]-box[1])*image_np.shape[1], box[0]*image_np.shape[0],linewidth=0,edgecolor='none',facecolor='w',alpha=0.8))
         ax.add_patch(patches.Rectangle((box[1]*image_np.shape[1],box[2]*image_np.shape[0]),(box[3]-box[1])*image_np.shape[1], image_np.shape[0],linewidth=0,edgecolor='none',facecolor='w',alpha=0.8))
