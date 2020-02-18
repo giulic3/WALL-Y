@@ -10,19 +10,23 @@ import argparse
 '''
 Look for Wally in a pic and draw it on screen with bounding boxes and a transparency
 mask for the brackground.
+
+Usage:
+python find_wally_pretty.py --model_path=<PATH_TO_FROZEN_GRAPH> --image_path=<PATH_TO_IMAGE_FOR_DETECTION>
 '''
 
 
 def main(args):
     def draw_box(box, image_np):
-        # Expand the box by 50%
-        box += np.array([-(box[2] - box[0])/2, -(box[3] - box[1])/2, (box[2] - box[0])/2, (box[3] - box[1])/2]) 
+        # Expand the box by 50% for better graphic visualization
+        box += np.array(
+            [-(box[2] - box[0])/2, -(box[3] - box[1])/2, (box[2] - box[0])/2, (box[3] - box[1])/2]) 
 
         fig = plt.figure()
         ax = plt.Axes(fig, [0., 0., 1., 1.])
         fig.add_axes(ax)
 
-        # Draw blurred boxes around box
+        # Draw bounding box and blur everything outside of it
         ax.add_patch(patches.Rectangle(
             (0,0),
             box[1]*image_np.shape[1], 
@@ -32,7 +36,14 @@ def main(args):
             facecolor='w',
             alpha=0.8))
 
-        ax.add_patch(patches.Rectangle((box[3]*image_np.shape[1],0),image_np.shape[1], image_np.shape[0],linewidth=0,edgecolor='none',facecolor='w',alpha=0.8))
+        ax.add_patch(patches.Rectangle(
+            (box[3]*image_np.shape[1],0),
+            image_np.shape[1], 
+            image_np.shape[0],
+            linewidth=0,
+            edgecolor='none',
+            facecolor='w',
+            alpha=0.8))
         ax.add_patch(patches.Rectangle((box[1]*image_np.shape[1],0),(box[3]-box[1])*image_np.shape[1], box[0]*image_np.shape[0],linewidth=0,edgecolor='none',facecolor='w',alpha=0.8))
         ax.add_patch(patches.Rectangle((box[1]*image_np.shape[1],box[2]*image_np.shape[0]),(box[3]-box[1])*image_np.shape[1], image_np.shape[0],linewidth=0,edgecolor='none',facecolor='w',alpha=0.8))
 
@@ -74,6 +85,7 @@ def main(args):
       
         ax.imshow(image_np)
         plt.show()
+
 
 if __name__ == '__main__':
 

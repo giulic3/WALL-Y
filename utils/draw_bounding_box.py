@@ -66,7 +66,6 @@ def main(args):
             use_normalized_coordinates=True,
             line_thickness=8)
 
-        #scipy.misc.toimage(image_np, cmin=0.0, cmax=...).save(args.image_path + "_2")
         im = Image.fromarray(image_np)
         im.save(args.image_path) # Overwrite image with bounding box
 

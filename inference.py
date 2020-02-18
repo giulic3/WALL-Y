@@ -8,7 +8,12 @@ from PIL import Image
 import matplotlib.patches as patches
 import argparse
 
-from utils.inference_utils import create_tiles
+sys.path.append("./models/research/")
+
+from object_detection.utils import label_map_util
+from object_detection.utils import visualization_utils as vis_util
+
+from utils.inference_utils import create_tiles, recombine_tiles
 
 '''
 Take an original scene from Wally's books, split the images into
@@ -56,18 +61,23 @@ def main(args):
       return np.array(image.getdata()).reshape(
           (im_height, im_width, 3)).astype(np.uint8)
 
+    label_map = label_map_util.load_labelmap(args.label_map)
+    categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=1, use_display_name=True)
+    category_index = label_map_util.create_category_index(categories)
+
     with detection_graph.as_default():
         with tf.Session(graph=detection_graph) as sess:
 
             img_path = os.path.join(args.image_dir, args.filename)
-            print('img path', img_path)
+            #print('img path', img_path)
             # Generate tiles
             create_tiles(img_path, (256, 256), (256, 256))
             tmp_dir = os.path.join(args.image_dir, "tmp")
             # Perform object detection on each tile
             for tile in os.listdir(tmp_dir):
 
-                image_np = load_image_into_numpy_array(Image.open(os.path.join(tmp_dir, tile))) # qua ci vuole lapath
+                tile_path = os.path.join(tmp_dir, tile)
+                image_np = load_image_into_numpy_array(Image.open(tile_path))
                 image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
                 boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
                 scores = detection_graph.get_tensor_by_name('detection_scores:0')
@@ -84,16 +94,27 @@ def main(args):
 
 
                 print('Wally found')
-                fig, ax = draw_box(boxes[0][0], image_np)
-              
-                plt.savefig('result.jpg')
+                vis_util.visualize_boxes_and_labels_on_image_array(
+                    image_np,
+                    np.squeeze(boxes),
+                    np.squeeze(classes).astype(np.int32),
+                    np.squeeze(scores),
+                    category_index,
+                    use_normalized_coordinates=True,
+                    line_thickness=8)
 
-        # Recombine tiles into bigger image but now with bounding boxes TODO
+                im = Image.fromarray(image_np)
+                im.save(tile_path) # Overwrite image with bounding box
+
+
+            # Recombine tiles into bigger image but now with bounding boxes
+            recombine_tiles(tmp_dir, img_path, tile_size=(256, 256), offset=(256, 256))
 
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('--label_map') # Label map for classes
     parser.add_argument('--model_path') # Path to frozen inference graph
     parser.add_argument('--image_dir') # Path to dir containing images for inference
     parser.add_argument('--filename') # Img filename
