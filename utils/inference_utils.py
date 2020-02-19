@@ -62,7 +62,7 @@ def recombine_tiles(img_dir, original_image_path, tile_size, offset):
             pos_y += im.height
         return dst
 
-    def get_concat_tiles(im_list_2d, resample=Image.BICUBIC):
+    def get_concat_tiles(im_list_2d):
         im_list_v = [get_concat_h_multi(im_list_h) for im_list_h in im_list_2d]
         return get_concat_v_multi(im_list_v)
 
@@ -73,7 +73,7 @@ def recombine_tiles(img_dir, original_image_path, tile_size, offset):
     im_list_2d = []
     row_list = []
     j = 0
-    for tile_image in sorted(os.listdir(img_dir)): # ??? ordine
+    for tile_image in sorted(os.listdir(img_dir)):
         print(tile_image)
         if j < max_j:
             row_list.append(Image.open(os.path.join(img_dir, tile_image)))
@@ -85,6 +85,7 @@ def recombine_tiles(img_dir, original_image_path, tile_size, offset):
             j = 1
             row_list = [Image.open(os.path.join(img_dir, tile_image))]
     
+    print('shape', len(im_list_2d))
     get_concat_tiles(im_list_2d).save(os.path.join(img_dir, 'result.jpg'))
 
 

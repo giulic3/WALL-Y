@@ -88,23 +88,23 @@ def main(args):
                     [boxes, scores, classes, num_detections],
                     feed_dict={image_tensor: np.expand_dims(image_np, axis=0)})
 
-                if scores[0][0] < 0.1:
+                if scores[0][0] < 0.7: # Try with different thresholds
                     print('Wally not found :(')
-                    continue # Go at the beginning of the loop?
+                    continue # Go to next loop iteration
 
+                else:
+                    print('Wally found')
+                    vis_util.visualize_boxes_and_labels_on_image_array(
+                        image_np,
+                        np.squeeze(boxes),
+                        np.squeeze(classes).astype(np.int32),
+                        np.squeeze(scores),
+                        category_index,
+                        use_normalized_coordinates=True,
+                        line_thickness=6)
 
-                print('Wally found')
-                vis_util.visualize_boxes_and_labels_on_image_array(
-                    image_np,
-                    np.squeeze(boxes),
-                    np.squeeze(classes).astype(np.int32),
-                    np.squeeze(scores),
-                    category_index,
-                    use_normalized_coordinates=True,
-                    line_thickness=8)
-
-                im = Image.fromarray(image_np)
-                im.save(tile_path) # Overwrite image with bounding box
+                    im = Image.fromarray(image_np)
+                    im.save(tile_path) # Overwrite image with bounding box
 
 
             # Recombine tiles into bigger image but now with bounding boxes
@@ -114,9 +114,9 @@ def main(args):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--label_map') # Label map for classes
-    parser.add_argument('--model_path') # Path to frozen inference graph
-    parser.add_argument('--image_dir') # Path to dir containing images for inference
-    parser.add_argument('--filename') # Img filename
+    parser.add_argument('--label_map', help='Path to label map for classes')
+    parser.add_argument('--model_path', help='Path to frozen inference graph') # TODO Could pass only path to image and retrieve dir from that
+    parser.add_argument('--image_dir', help='Path to folder containing the image used for inference/object detection')
+    parser.add_argument('--filename', help='Filename of the image chosen for object detection')
     args = parser.parse_args()
     main(args)
