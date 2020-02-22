@@ -142,3 +142,4 @@ tmp/
 weights_faster_rcnn_resnet101_coco/
 *.ckpt*
 networks/trained_model/export/
+networks/trained_inference_model/
