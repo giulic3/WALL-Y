@@ -134,8 +134,11 @@ dmypy.json
 *.tfrecord
 .tensorboard-info/
 model/
-trained_model/
 trained_inference_graphs/
 addons/
 *.whl
 .directory
+tmp/
+weights_faster_rcnn_resnet101_coco/
+*.ckpt*
+networks/trained_model/export/
