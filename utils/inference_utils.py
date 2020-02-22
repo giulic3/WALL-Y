@@ -74,18 +74,19 @@ def recombine_tiles(img_dir, original_image_path, tile_size, offset):
     row_list = []
     j = 0
     for tile_image in sorted(os.listdir(img_dir)):
-        print(tile_image)
+        #print(tile_image)
         if j < max_j:
             row_list.append(Image.open(os.path.join(img_dir, tile_image)))
             j += 1
 
         else: # Switch to new row
             im_list_2d.append(row_list) # Append old row and reset
-            print(len(row_list))
+            #print(len(row_list))
             j = 1
             row_list = [Image.open(os.path.join(img_dir, tile_image))]
-    
-    print('shape', len(im_list_2d))
+
+    im_list_2d.append(row_list) # Append the last one too
+    #print('shape', len(im_list_2d))
     get_concat_tiles(im_list_2d).save(os.path.join(img_dir, 'result.jpg'))
 
 
