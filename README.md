@@ -66,3 +66,8 @@ python src/inference.py --label_map=data/mscoco_label_map.pbtxt --model_path="TR
 Replace `"TRAINED_MODEL_DIR"` pointing to the path containing the trained model. The resulting image will be saved in `image_dir/tmp/`.
 
 ## Credits
+
+- [Anna Avena](https://github.com/annaavena)
+- [Giulia Cantini]()
+- [Matteo Del Vecchio](https://github.com/matteodelv)
+- [Simone Preite](https://github.com/simonepreite)
